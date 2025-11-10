@@ -222,9 +222,14 @@ describe("UniBank Contract - Complete Test Suite", function () {
     it("Should allow authorized user to deposit", async function () {
       const depositAmount = toWei(1);
       
-      await expect(uniBank.connect(user1).deposit({ value: depositAmount }))
+      const tx = await uniBank.connect(user1).deposit({ value: depositAmount });
+      const receipt = await tx.wait();
+      const block = await ethers.provider.getBlock(receipt.blockNumber);
+      const depositTimestamp = block.timestamp;
+
+      await expect(tx)
         .to.emit(uniBank, "DepositMade")
-        .withArgs(user1.address, 0, depositAmount, 100, await time.latest() + 1);
+        .withArgs(user1.address, 0, depositAmount, 100, depositTimestamp);
 
       const count = await uniBank.getUserDepositsCount(user1.address);
       expect(count).to.equal(1);
