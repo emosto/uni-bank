@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --gradient-from: #1e3a8a;
+    --gradient-via: #1e40af;
+    --gradient-to: #60a5fa;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-blue-900 via-blue-800 to-blue-400 min-h-screen;
+  }
+}
